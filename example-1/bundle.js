@@ -1,6 +1,0 @@
-(() => {
-  // index.js
-  console.log("Hello from the developer console!");
-  var date = new Date();
-  console.log(date);
-})();
