@@ -4,6 +4,12 @@ class View {
   constructor(model) { 
     this.model = model
     this.mainContainerEl = document.querySelector('#main-container');
+
+
+    this.addNoteButton = document.querySelector('#add-note')
+    this.addNoteButton.addEventListener('click', () => {
+      this.addNote()
+    })
   }
 
   displayNotes() {
@@ -13,6 +19,15 @@ class View {
       div.className = "note";
       this.mainContainerEl.append(div);
     })
+  }
+
+  addNote() {
+    const inputEl = document.querySelector('#note-text-box')
+    this.model.addNote(inputEl.value)
+    inputEl.value = ''
+    const notes = document.querySelectorAll('div.note');
+    notes.forEach(note => note.remove());
+    this.displayNotes();
   }
 }
 

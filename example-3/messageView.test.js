@@ -14,7 +14,10 @@ describe('MessageView', () => {
     const buttonEl = document.querySelector('#show-message-button');
     buttonEl.click();
 
-    expect(document.querySelector('#message')).not.toBeNull();
+    const message = document.querySelector('#message')
+    const inputEl = document.querySelector('#message-input');
+
+    expect(message.innerText).toEqual(inputEl.value);
   });
 
   it('hides the message if the button is clicked again', () => {
