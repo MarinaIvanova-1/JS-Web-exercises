@@ -13,6 +13,7 @@ class NotesView {
     this.addNoteButton.addEventListener('click', () => {
       this.addNote()
     })
+
   }
 
   displayNotes() {
@@ -35,6 +36,7 @@ class NotesView {
   addNote() {
     const inputEl = document.querySelector('#note-text-box')
     this.model.addNoteToModel(inputEl.value)
+    this.api.createNote(inputEl.value);
     inputEl.value = ''
     const notes = document.querySelectorAll('div.note');
     notes.forEach(note => note.remove());
