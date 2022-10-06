@@ -7,12 +7,16 @@ class NotesModel {
     return this.notes
   }
 
-  addNote(note) {
+  addNoteToModel(note) {
     return this.notes.push(note);
   }
 
   reset() {
     this.notes = []
+  }
+
+  setNotes(data) {
+    data.forEach ((note) => this.notes.push(note))
   }
 }
 
