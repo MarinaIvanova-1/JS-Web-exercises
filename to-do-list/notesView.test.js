@@ -29,55 +29,76 @@ describe('NotesView', () => {
     expect(document.querySelectorAll('.note').length).toBe(2);
   })
 
-  // it('allows a user to add a new note', () => {
+  it('allows a user to add a new note', () => {
 
-  //   const model = new NotesModel();
-  //   const api = new NotesApi();
-  //   const view = new NotesView(model, api);
-  //   const inputEl = document.querySelector('#note-text-box')
-  //   inputEl.value = "New note"
+    const model = new NotesModel();
+    const api = new NotesApi();
+    const view = new NotesView(model, api);
+    const inputEl = document.querySelector('#note-text-box')
+    inputEl.value = "New note"
 
-  //   const buttonAddNote = document.querySelector('#add-note');
-  //   buttonAddNote.click();
+    const addNoteButton = document.querySelector('#add-note');
+    addNoteButton.click();
 
-  //   const messages = document.querySelectorAll('div.note');
+    const messages = document.querySelectorAll('div.note');
 
-  //   expect(messages[0].innerText).toEqual("New note");
-  //   // This line doesn't work for some reason: expect(messages[0].innerText).toEqual(inputEl.value);
-  // })
+    expect(messages[0].innerText).toEqual("New note");
+  })
 
-  // it('refreshes the list of notes every time before the new note is added', () => {
-  //   const model = new NotesModel();
-  //   const api = new NotesApi();
-  //   const view = new NotesView(model, api);
+  it('refreshes the list of notes every time before the new note is added', () => {
+    const model = new NotesModel();
+    const api = new NotesApi();
+    const view = new NotesView(model, api);
 
-  //   const inputEl = document.querySelector('#note-text-box')
-  //   inputEl.value = "New note"
+    const inputEl = document.querySelector('#note-text-box')
+    inputEl.value = "New note"
 
-  //   const buttonAddNote = document.querySelector('#add-note');
-  //   buttonAddNote.click();
-  //   buttonAddNote.click();
+    const buttonAddNote = document.querySelector('#add-note');
+    buttonAddNote.click();
+    buttonAddNote.click();
 
-  //   const notes = document.querySelectorAll('.note');
-  //   expect(notes.length).toEqual(2)
-  // })
+    const notes = document.querySelectorAll('.note');
+    expect(notes.length).toEqual(2)
+  })
 
-  // it('Fetches the notes through the api class', (done) => {
-  //   const model = new NotesModel();
-  //   const api = {
-  //     loadNotes: (callback) => {
-  //       callback([{ content: "This is a note"}]);
-  //     },
-  //   };
-  //   console.log(model)
-  //   console.log(api)
+  it('Fetches the notes through the api class', (done) => {
+    const model = new NotesModel();
+    const api = {
+      loadNotes: ((callback) => {
+        callback(["This is a note"]);
+      })
+    };
 
-  //   const view = new NotesView(model, api);
+    const view = new NotesView(model, api);
 
-  //   view.displayNotesFromApi(() => {
-  //     const note = document.querySelector('.note');
-  //     expect(note.textContent).toEqual("This is a note");
-  //     done();
-  //   })
-  // })
+    view.displayNotesFromApi()
+
+    setTimeout(() => {
+      const note = document.querySelector('.note');
+      expect(note.innerText).toEqual("This is a note"); 
+      done();
+    }, 0)
+  })
+
+
+  it('shows an error message if there is no connection to the server', (done) => {
+    const model = new NotesModel();
+    const api = {
+      loadNotes: (_, callbackError) => {
+        callbackError();
+      },
+    };
+    const view = new NotesView(model, api)
+
+    view.displayNotesFromApi()
+
+    setTimeout(() => {
+      const notes = document.querySelectorAll('.note');
+      expect(notes.length).toEqual(0)
+
+      const error = document.querySelector('.error')
+      expect(error.innerText).toEqual("Oops, something went wrong!")
+      done();
+    }, 0)
+  })
 })

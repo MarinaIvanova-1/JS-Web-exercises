@@ -1,11 +1,14 @@
 class NotesApi {
-  loadNotes(callback) {
+  loadNotes(callback, callbackError) {
     fetch('http://localhost:3000/notes')
       .then(data => data.json())
       .then(json => callback(json))
+      .catch((error) => {
+        callbackError(error)
+      })
   }
 
-    createNote = (note, callback) => {
+    createNote = (note, callback, callbackError) => {
       const noteObject = { content: note };
 
       fetch('http://localhost:3000/notes', {
@@ -17,10 +20,11 @@ class NotesApi {
       })
       .then((response) => response.json())
       .then((data) => {
-        callback(data)
+        callback(data);
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
+        callbackError(error);
       });
   }
 }
